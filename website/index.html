@@ -1,0 +1,27 @@
+<html lang="">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <head>
+        <title>Counter</title>
+        <script>
+            const getViews = async () => {
+                fetch('https://w8z821mhrj.execute-api.us-east-1.amazonaws.com/prod/views', {
+                    method: 'GET'
+                })
+                .then(response => response.json())
+                .then((response) => {
+                    console.log(response);
+                    document.getElementById("website-counter").innerHTML = "<p>"+response.body["visits"]+"</p>";
+                });
+            }
+            getViews();
+        </script>
+        <link rel="stylesheet" href="style.css">
+        <h1>Counter</h1>
+    </head>
+    <body>
+        <div>Website visits: </div>
+        <!-- <button type="submit" onclick="getViews();return false;">Get Views</button> -->
+        <div id="website-counter"></div>
+    </body>
+</html>
