@@ -7,11 +7,11 @@ data "archive_file" "lambda_get_views" {
 }
 
 # resource "aws_s3_object" "lambda_get_views_function" {
-#     bucket = lambda_bucket_name
-#     key = "get-views.zip"
+#     bucket = var.lambda_bucket_name
+#     key = "lambda_code.zip"
 #     source = data.archive_file.lambda_get_views.output_path
 #     etag = filemd5(data.archive_file.lambda_get_views.output_path)
-#}
+# }
 
 resource "aws_lambda_permission" "apigw_lambda" {
   statement_id  = "AllowExecutionFromAPIGateway"
@@ -24,9 +24,9 @@ resource "aws_lambda_permission" "apigw_lambda" {
 }
 
 resource "aws_lambda_function" "lambda" {
-  filename = "lambda_code.zip"
+  filename = "../lambda_code.zip"
   function_name = "GetViews"
-  s3_bucket = var.lambda_bucket_name
+  #s3_bucket = var.lambda_bucket_name
   role          = aws_iam_role.role.arn
   handler       = "lambda.lambda_handler"
   runtime       = "python3.9"
