@@ -23,3 +23,12 @@ output "function_arn" {
 output "lambda_bucket" {
   value = module.storage.lambda_bucket
 }
+output "apigw_resource" {
+  value = module.apigw.apigw_resource
+}
+output "apigw_method" {
+  value = module.apigw.apigw_method
+}
+output "apigw_rest_api" {
+  value = module.apigw.apigw_rest_api
+}

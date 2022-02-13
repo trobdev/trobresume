@@ -2,16 +2,16 @@
 data "archive_file" "lambda_get_views" {
     type = "zip"
 
-    source_dir = "${path.module}/get-views"
-    output_path = "${path.module}/get-views.zip"
+    source_dir = "../lambda_code"
+    output_path = "../lambda_code.zip"
 }
 
-resource "aws_s3_object" "lambda_get_views_function" {
-    bucket = aws_s3_bucket.lambda_functions_bucket.id
-    key = "get-views.zip"
-    source = data.archive_file.lambda_get_views.output_path
-    etag = filemd5(data.archive_file.lambda_get_views.output_path)
-}
+# resource "aws_s3_object" "lambda_get_views_function" {
+#     bucket = lambda_bucket_name
+#     key = "get-views.zip"
+#     source = data.archive_file.lambda_get_views.output_path
+#     etag = filemd5(data.archive_file.lambda_get_views.output_path)
+#}
 
 resource "aws_lambda_permission" "apigw_lambda" {
   statement_id  = "AllowExecutionFromAPIGateway"
@@ -20,17 +20,17 @@ resource "aws_lambda_permission" "apigw_lambda" {
   principal     = "apigateway.amazonaws.com"
 
   # More: http://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-control-access-using-iam-policies-to-invoke-api.html
-  source_arn = "arn:aws:execute-api:${var.aws_region}:${var.account_id}:${aws_api_gateway_rest_api.ResumeAPI.id}/*/${aws_api_gateway_method.get_method.http_method}${aws_api_gateway_resource.ResumeAPIResource.path}"
+  source_arn = "arn:aws:execute-api:${var.aws_region}:${var.account_id}:${var.apigw_rest_api}/*/${var.apigw_method}${var.apigw_resource}"
 }
 
 resource "aws_lambda_function" "lambda" {
-  filename      = "lambda.zip"
+  filename = "lambda_code.zip"
   function_name = "GetViews"
+  s3_bucket = var.lambda_bucket_name
   role          = aws_iam_role.role.arn
   handler       = "lambda.lambda_handler"
   runtime       = "python3.9"
-
-  source_code_hash = filebase64sha256("lambda.zip")
+  source_code_hash = data.archive_file.lambda_get_views.output_base64sha256
 }
 
 # IAM

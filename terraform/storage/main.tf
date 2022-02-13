@@ -2,10 +2,10 @@
 
 #where we will host website files
 resource "aws_s3_bucket" "www_bucket" {
-  bucket = "www.${var.bucket_name}"
-  acl    = "public-read"
+  bucket        = "www.${var.bucket_name}"
+  acl           = "public-read"
   force_destroy = true
-  policy = templatefile("templates/s3-policy.json", { bucket = "www.${var.bucket_name}" })
+  policy        = templatefile("templates/s3-policy.json", { bucket = "www.${var.bucket_name}" })
 
 
   cors_rule {
@@ -25,10 +25,10 @@ resource "aws_s3_bucket" "www_bucket" {
 
 #used as a redirect to the other bucket where files are hosted
 resource "aws_s3_bucket" "root_bucket" {
-  bucket = var.bucket_name
-  acl    = "public-read"
+  bucket        = var.bucket_name
+  acl           = "public-read"
   force_destroy = true
-  policy = templatefile("templates/s3-policy.json", { bucket = var.bucket_name })
+  policy        = templatefile("templates/s3-policy.json", { bucket = var.bucket_name })
 
   website {
     redirect_all_requests_to = "https://www.${var.domain_name}"
@@ -38,6 +38,8 @@ resource "aws_s3_bucket" "root_bucket" {
 }
 
 resource "aws_s3_bucket" "lambda_functions_bucket" {
-  bucket = var.lambda_bucket_name
-  tags = var.common_tags
+  bucket        = var.lambda_bucket_name
+  acl           = "private"
+  force_destroy = true
+  tags          = var.common_tags
 }

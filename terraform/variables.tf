@@ -4,7 +4,7 @@ variable "aws_region" {
 }
 
 variable "alias_region" {
-    default = "us-east-1"
+  default = "us-east-1"
 }
 
 variable "domain_name" {
@@ -18,7 +18,7 @@ variable "bucket_name" {
 }
 
 variable "lambda_bucket_name" {
-  type = string
+  type        = string
   description = "Lambda bucket name"
 }
 
@@ -31,7 +31,7 @@ variable "common_tags" {
   description = "Tags for ease of use"
 }
 
-variable "account_id" { 
-  type = string
+variable "account_id" {
+  type        = string
   description = "Account ID"
 }

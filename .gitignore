@@ -4,3 +4,6 @@ terraform.tfstate
 terraform.tfvars
 *.tfstate*
 .terraform.lock.hcl
+# Other
+*.py
+lambda_code.zip

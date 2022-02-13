@@ -5,8 +5,8 @@ data "aws_route53_delegation_set" "dset" {
 }
 
 resource "aws_route53_zone" "main" {
-  name = var.domain_name
-  tags = var.common_tags
+  name              = var.domain_name
+  tags              = var.common_tags
   delegation_set_id = data.aws_route53_delegation_set.dset.id
 }
 
