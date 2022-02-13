@@ -37,9 +37,9 @@ resource "aws_s3_bucket" "root_bucket" {
   tags = var.common_tags
 }
 
-resource "aws_s3_bucket" "lambda_functions_bucket" {
-  bucket        = var.lambda_bucket_name
-  acl           = "private"
-  force_destroy = true
-  tags          = var.common_tags
-}
+# resource "aws_s3_bucket" "lambda_functions_bucket" {
+#   bucket        = var.lambda_bucket_name
+#   acl           = "private"
+#   force_destroy = true
+#   tags          = var.common_tags
+# }

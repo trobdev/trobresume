@@ -17,10 +17,10 @@ variable "bucket_name" {
   description = "Name of bucket minus prefix"
 }
 
-variable "lambda_bucket_name" {
-  type        = string
-  description = "Lambda bucket name"
-}
+# variable "lambda_bucket_name" {
+#   type        = string
+#   description = "Lambda bucket name"
+# }
 
 variable "delegation_set_id" {
   type        = string

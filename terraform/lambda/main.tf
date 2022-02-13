@@ -1,9 +1,9 @@
 # --- lambda/main.tf
 data "archive_file" "lambda_get_views" {
-    type = "zip"
+  type = "zip"
 
-    source_dir = "../lambda_code"
-    output_path = "../lambda_code.zip"
+  source_dir  = "../lambda_code"
+  output_path = "../lambda_code.zip"
 }
 
 # resource "aws_s3_object" "lambda_get_views_function" {
@@ -24,12 +24,12 @@ resource "aws_lambda_permission" "apigw_lambda" {
 }
 
 resource "aws_lambda_function" "lambda" {
-  filename = "../lambda_code.zip"
+  filename      = "../lambda_code.zip"
   function_name = "GetViews"
   #s3_bucket = var.lambda_bucket_name
-  role          = aws_iam_role.role.arn
-  handler       = "lambda.lambda_handler"
-  runtime       = "python3.9"
+  role             = aws_iam_role.role.arn
+  handler          = "lambda.lambda_handler"
+  runtime          = "python3.9"
   source_code_hash = data.archive_file.lambda_get_views.output_base64sha256
 }
 

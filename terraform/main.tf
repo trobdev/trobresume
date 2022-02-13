@@ -4,7 +4,7 @@ module "storage" {
   source      = "./storage"
   domain_name = var.domain_name
   bucket_name = var.bucket_name
-  lambda_bucket_name = var.lambda_bucket_name
+  # lambda_bucket_name = var.lambda_bucket_name
   common_tags = var.common_tags
 }
 
@@ -42,11 +42,11 @@ module "apigw" {
 }
 
 module "lambda" {
-  source        = "./lambda"
-  aws_region    = var.aws_region
+  source     = "./lambda"
+  aws_region = var.aws_region
   account_id = var.account_id
-  lambda_bucket_name = module.storage.lambda_bucket
+  #lambda_bucket_name = module.storage.lambda_bucket
   apigw_resource = module.apigw.apigw_resource
-  apigw_method = module.apigw.apigw_method
+  apigw_method   = module.apigw.apigw_method
   apigw_rest_api = module.apigw.apigw_rest_api
 }
