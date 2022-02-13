@@ -17,19 +17,23 @@ resource "aws_api_gateway_method" "GetMethod" {
     authorization = "NONE"
 }
 
-resource "aws_api_gateway_integration" "lambda-api-integration" { 
+resource "aws_api_gateway_stage" "prod-stage" {
+    deployment_id = aws_api_gateway_deployment.resume-api-prod-deployment.id
     rest_api_id = aws_api_gateway_rest_api.ResumeAPI.id
-    resource_id = aws_api_gateway_resource.ResumeAPIResource.id
-    type = "AWS"
-    integration_http_method = "GET"
-
+    stage_name = var.stage_name
 }
+# resource "aws_api_gateway_integration" "lambda-api-integration" { 
+#     rest_api_id = aws_api_gateway_rest_api.ResumeAPI.id
+#     resource_id = aws_api_gateway_resource.ResumeAPIResource.id
+#     type = "AWS"
+#     integration_http_method = "GET"
+
+# }
 
 resource "aws_api_gateway_deployment" "resume-api-prod-deployment" {
     rest_api_id = aws_api_gateway_rest_api.ResumeAPI.id
-    stage_name = "prod"
-    depends_on = [
-        "aws_api_gateway_integration.lambda-api-integration"
-        # "aws_api_gateway_integration_response"
-    ]
+    
+    lifecycle { 
+        create_before_destroy = true
+    }
 }
