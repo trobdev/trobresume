@@ -33,3 +33,7 @@ module "dns" {
   root_hosted_zone_id = module.cloudfront.root_hosted_zone_id
   www_hosted_zone_id  = module.cloudfront.www_hosted_zone_id
 }
+
+module "apigw" {
+  source = "./apigw"
+}
