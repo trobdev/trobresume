@@ -36,4 +36,12 @@ module "dns" {
 
 module "apigw" {
   source = "./apigw"
+  account_id = var.account_id
+  function_arn = module.lambda.function_arn
+}
+
+module "lambda" {
+  source = "./lambda"
+  aws_region = var.aws_region
+  lambda_bucket = module.lambda.lambda_bucket
 }

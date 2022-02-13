@@ -17,3 +17,9 @@ output "www_website_endpoint" {
 output "root_website_endpoint" {
   value = module.storage.root_website_endpoint
 }
+output "function_arn" {
+  value = module.lambda.function_arn
+}
+output "lambda_bucket" {
+  value = module.storage.lambda_bucket
+}

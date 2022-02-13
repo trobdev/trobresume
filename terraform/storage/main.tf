@@ -37,3 +37,7 @@ resource "aws_s3_bucket" "root_bucket" {
   tags = var.common_tags
 }
 
+resource "aws_s3_bucket" "lambda_functions_bucket" {
+  bucket = var.lambda_bucket_name
+  tags = var.common_tags
+}
