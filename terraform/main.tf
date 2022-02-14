@@ -50,3 +50,9 @@ module "lambda" {
   apigw_method   = module.apigw.apigw_method
   apigw_rest_api = module.apigw.apigw_rest_api
 }
+
+module "ddb" {
+  source         = "./ddb"
+  ddb_table_name = var.ddb_table_name
+  ddb_hash_key   = var.ddb_hash_key
+}

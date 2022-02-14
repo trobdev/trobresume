@@ -35,3 +35,13 @@ variable "account_id" {
   type        = string
   description = "Account ID"
 }
+
+variable "ddb_table_name" {
+  type        = string
+  description = "DDB table name"
+}
+
+variable "ddb_hash_key" {
+  type        = string
+  description = "required ddb hash key"
+}
