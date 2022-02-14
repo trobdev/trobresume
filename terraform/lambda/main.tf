@@ -2,8 +2,8 @@
 data "archive_file" "lambda_get_views" {
   type = "zip"
 
-  source_dir  = "../lambda_code"
-  output_path = "../lambda_code.zip"
+  source_dir  = "lambda/lambda_code"
+  output_path = "lambda/lambda_code.zip"
 }
 
 # resource "aws_s3_object" "lambda_get_views_function" {
@@ -24,40 +24,32 @@ resource "aws_lambda_permission" "apigw_lambda" {
 }
 
 resource "aws_lambda_function" "lambda" {
-  filename      = "../lambda_code.zip"
+  filename      = "lambda/lambda_code.zip"
   function_name = "GetViews"
   #s3_bucket = var.lambda_bucket_name
-  role             = aws_iam_role.ddb_role.arn
-  handler          = "lambda.lambda_handler"
+  role             = aws_iam_role.lambda-invoke-role.arn
+  handler          = "getViews.lambda_handler"
   runtime          = "python3.9"
   source_code_hash = data.archive_file.lambda_get_views.output_base64sha256
 }
 
 # IAM
-resource "aws_iam_role" "ddb_role" {
-  name = "ddb-rw-role"
-  assume_role_policy = file("templates/ddb-policy.json")
+resource "aws_iam_role" "lambda-invoke-role" {
+  name               = "lambda-invoke-role"
+  assume_role_policy = file("templates/lambda-invoke-policy.json")
+  #assume_role_policy = file("templates/lambda-invoke-policy.json")
 }
 
-resource "aws_iam_role" "role" {
-  name = "allow-lambda-role"
+resource "aws_iam_role_policy" "ddb-rw-policy" {
+  name   = "ddb-rw-policy"
+  role   = aws_iam_role.lambda-invoke-role.id
+  policy = file("templates/ddb-policy.json")
+}
+# resource "aws_iam_role" "role" {
+#   name = "allow-lambda-role"
 
-  assume_role_policy = <<POLICY
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Action": "sts:AssumeRole",
-      "Principal": {
-        "Service": "lambda.amazonaws.com"
-      },
-      "Effect": "Allow",
-      "Sid": ""
-    }
-  ]
-}
-POLICY
-}
+#   assume_role_policy = file("templates/lambda-invoke-policy.json")
+# }
 
 # resource "aws_iam_policy" "lambdaInvoke" {
 #   name = "lambdaInvoke"

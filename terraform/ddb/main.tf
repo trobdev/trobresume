@@ -39,9 +39,9 @@ resource "aws_dynamodb_table_item" "ddb_item" {
   item       = <<ITEM
   {
     "${var.ddb_hash_key}" : {"S" : "test" },
-    "one" : {"S": "https://www.trobresume.com"},
-    "two" : {"S": "13 Feb 22"},
-    "three" : {"N": "0"}
+    "url" : {"S": "https://www.trobresume.com"},
+    "last_updated" : {"S": "13 Feb 22"},
+    "visitor_count" : {"N" : "0"}
   }
   ITEM
 }
