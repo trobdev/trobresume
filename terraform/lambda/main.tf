@@ -27,13 +27,18 @@ resource "aws_lambda_function" "lambda" {
   filename      = "../lambda_code.zip"
   function_name = "GetViews"
   #s3_bucket = var.lambda_bucket_name
-  role             = aws_iam_role.role.arn
+  role             = aws_iam_role.ddb_role.arn
   handler          = "lambda.lambda_handler"
   runtime          = "python3.9"
   source_code_hash = data.archive_file.lambda_get_views.output_base64sha256
 }
 
 # IAM
+resource "aws_iam_role" "ddb_role" {
+  name = "ddb-rw-role"
+  assume_role_policy = file("templates/ddb-policy.json")
+}
+
 resource "aws_iam_role" "role" {
   name = "allow-lambda-role"
 
@@ -53,3 +58,22 @@ resource "aws_iam_role" "role" {
 }
 POLICY
 }
+
+# resource "aws_iam_policy" "lambdaInvoke" {
+#   name = "lambdaInvoke"
+#   path = "/"
+#   description = "Lambda Invoke policy"
+#   policy = jsonencode({
+#     "Version": "2012-10-17",
+#     "Statement": [
+#       {
+#         "Action": "sts:AssumeRole",
+#         "Principal": {
+#           "Service": "lambda.amazonaws.com"
+#         },
+#         "Effect": "Allow",
+#         "Sid": ""
+#       }
+#     ]
+#   })
+# }
